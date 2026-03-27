@@ -1,0 +1,16 @@
+﻿@model DepartmentViewModel
+@{
+    ViewData["Title"] = "Department Details";
+}
+
+<h1>Department Details</h1>
+<br />
+<h2>@Model.DeptName</h2>
+<h2>@Model.Status</h2>
+<select class="form form-control">
+    @foreach (var item in Model.Students)
+    {
+        <option>@item.Name</option>
+    }
+</select>
+

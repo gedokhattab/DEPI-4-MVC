@@ -5,6 +5,7 @@ namespace Day02.Controllers
 {
     public class StudentController : Controller
     {
+        StudentBL studentBL = new StudentBL();
         // GET: /Student
         public IActionResult Index()
         {
@@ -14,7 +15,6 @@ namespace Day02.Controllers
         // GET: /Student/ShowAll
         public IActionResult ShowAll()
         {
-            StudentBL studentBL = new StudentBL();
             var Students = studentBL.GetAll();
             return View("ShowAll", Students);
         }
@@ -22,7 +22,6 @@ namespace Day02.Controllers
         // GET: /Student/ShowDetails/1
         public IActionResult ShowDetails(int id)
         {
-            StudentBL studentBL = new StudentBL();
             var Student = studentBL.GetById(id);
             return View("ShowDetails", Student);
         }
