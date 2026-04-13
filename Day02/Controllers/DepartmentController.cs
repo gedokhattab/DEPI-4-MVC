@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Day02.Models;
 using Day02.ViewModels;
+using Day02.Repositories;
 
 namespace Day02.Controllers
 {
     public class DepartmentController : Controller
     {
-        DepartmentBL departmentBL = new DepartmentBL();
+        IDepartmentRepository _departmentRepository;
+
+        public DepartmentController(IDepartmentRepository departmentRepository)
+        {
+            _departmentRepository = departmentRepository;   
+        }
 
         // GET: /Department/Index
         [HttpGet]
         public IActionResult Index()
         {
-            var Departments = departmentBL.GetAll();
+            var Departments = _departmentRepository.GetAllWithLoading();
             return View("Index", Departments);
         }
 
@@ -21,7 +27,7 @@ namespace Day02.Controllers
         [HttpGet]
         public IActionResult ShowDetails(int id)
         {
-            var Department = departmentBL.GetById(id);
+            var Department = _departmentRepository.GetById(id);
             DepartmentViewModel DeptVM= new DepartmentViewModel()
             {
                 DeptName = Department.Name,
@@ -44,7 +50,8 @@ namespace Day02.Controllers
         {
             if (dept.Name != null)
             {
-                departmentBL.Add(dept);
+                _departmentRepository.Add(dept);
+                _departmentRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Add", dept);

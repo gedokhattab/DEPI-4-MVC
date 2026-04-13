@@ -1,5 +1,102 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<Student>
+
+<div class="container mt-4">
+    <h2 class="mb-4">All Students</h2>
+    <a asp-action="Create" class="btn btn-success mb-3">Add New Student</a>
+
+    <form asp-action="Index" method="get" class="row g-3 mb-4">
+        <div class="col-auto">
+            <input type="text" name="name" class="form-control"
+                   placeholder="Search names..." value="@ViewData["SearchTerm"]">
+        </div>
+
+        <div class="col-auto">
+            <select name="deptId" class="form-select" asp-items="@(ViewData["Departments"] as SelectList)">
+                <option value="">-- All Departments --</option>
+            </select>
+        </div>
+    
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        
+            @* Show Clear button if either filter is active *@
+            @if (!string.IsNullOrEmpty(ViewData["SearchTerm"]?.ToString()) || ViewData["SelectedDept"] != null)
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+            }
+        </div>
+    </form>
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td><strong>@item.Name</strong></td>
+                    <td>@item.Age</td>
+                    <td><span class="badge bg-info text-dark">@(item.Department?.Name ?? "No Dept")</span></td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var currentPage = (int)ViewData["CurrentPage"];
+        var totalPages = (int)ViewData["TotalPages"];
+        var searchTerm = ViewData["SearchTerm"];
+        var selectedDept = ViewData["SelectedDept"];
+    }
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+
+                @* Previous Button *@
+                <li class="page-item @(currentPage == 0 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-n="@(currentPage - 1)"
+                       asp-route-name="@searchTerm"
+                       asp-route-deptId="@selectedDept">&laquo;</a>
+                </li>
+
+                @* Page Numbers *@
+                @for (int i = 0; i < totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-n="@i"
+                           asp-route-name="@searchTerm"
+                           asp-route-deptId="@selectedDept">@(i + 1)</a>
+                    </li>
+                }
+
+                @* Next Button *@
+                <li class="page-item @(currentPage >= totalPages - 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-n="@(currentPage + 1)"
+                       asp-route-name="@searchTerm"
+                       asp-route-deptId="@selectedDept">&raquo;</a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+</div>

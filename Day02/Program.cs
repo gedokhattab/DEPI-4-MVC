@@ -1,3 +1,6 @@
+using Day02.Data.Contexts;
+using Day02.Repositories;
+
 namespace Day02
 {
     public class Program
@@ -8,6 +11,9 @@ namespace Day02
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddDbContext<SchoolDbContext>();
 
             var app = builder.Build();
 
@@ -24,7 +30,7 @@ namespace Day02
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Student}/{action=ShowAll}/{id?}");
+                pattern: "{controller=Student}/{action=Index}/{id?}");
 
             app.Run();
         }
