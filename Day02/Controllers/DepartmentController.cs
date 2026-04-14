@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Day02.Models;
-using Day02.ViewModels;
+﻿using Day02.Models;
 using Day02.Repositories;
+using Day02.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Day02.Controllers
 {
@@ -31,30 +32,53 @@ namespace Day02.Controllers
             DepartmentViewModel DeptVM= new DepartmentViewModel()
             {
                 DeptName = Department.Name,
-                Students = Department.Students.Where(S => S.Age>25).ToList(),
+                Students = Department.Students.ToList(),
                 Status = Department.Students.Count > 50 ? "Main" : "Branch"
             };
             return View("ShowDetails", DeptVM);
         }
 
-        // GET: /Department/Add
+        // GET: /Department/Create
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Create()
         {
-            return View("Add");
+            return View("Create");
         }
 
-        // POST: /Department/SaveAdd?Name=CS&ManagerName=Ali
+        // POST: /Department/CreateDep
         [HttpPost]
-        public IActionResult SaveAdd(Department dept)
+        public IActionResult CreateDep(Department department)
         {
-            if (dept.Name != null)
+            if (ModelState.IsValid)
             {
-                _departmentRepository.Add(dept);
+                _departmentRepository.Add(department);
                 _departmentRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction("Add", dept);
+            return View("Create", department);
+        }
+
+        // GET: /Department/Edit/1
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Department department = _departmentRepository.GetById(id);
+            return View("Edit", department);
+        }
+
+        // POST: /Department/EditDep
+        [HttpPost]
+        public IActionResult EditDep(Department NewDept)
+        {
+            Department department = _departmentRepository.GetById(NewDept.Id);
+            if (ModelState.IsValid)
+            {
+                department.Name = NewDept.Name;
+                department.ManagerName = NewDept.ManagerName;
+                _departmentRepository.Save();
+                return RedirectToAction(nameof(Index));
+            }
+            return View("Edit", department);
         }
 
     }

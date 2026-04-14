@@ -1,4 +1,11 @@
 ﻿@model List<Student>
+@{
+    ViewData["Title"] = "Students";
+    var currentPage = (int)ViewData["CurrentPage"];
+    var totalPages = (int)ViewData["TotalPages"];
+    var searchTerm = ViewData["SearchTerm"];
+    var selectedDept = ViewData["SelectedDept"];
+}
 
 <div class="container mt-4">
     <h2 class="mb-4">All Students</h2>
@@ -11,8 +18,8 @@
         </div>
 
         <div class="col-auto">
-            <select name="deptId" class="form-select" asp-items="@(ViewData["Departments"] as SelectList)">
-                <option value="">-- All Departments --</option>
+            <select name="deptId" class="form-select" asp-items="@(ViewData["Departments"] as SelectList)" asp-for="@selectedDept">
+                <option value=""> All Departments </option>
             </select>
         </div>
     
@@ -56,13 +63,6 @@
             }
         </tbody>
     </table>
-
-    @{
-        var currentPage = (int)ViewData["CurrentPage"];
-        var totalPages = (int)ViewData["TotalPages"];
-        var searchTerm = ViewData["SearchTerm"];
-        var selectedDept = ViewData["SelectedDept"];
-    }
 
     @if (totalPages > 1)
     {

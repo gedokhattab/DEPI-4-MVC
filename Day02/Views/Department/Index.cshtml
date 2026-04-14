@@ -1,24 +1,38 @@
 ﻿@model List<Department>
 
 @{
-	ViewData["Title"] = "All Departments";
+    ViewData["Title"] = "Departments";
 }
+<div class="container mt-4">
+    <h2>All Departments</h2>
 
-<h1>Departments</h1>
+    <a href="/Department/Create" class="btn btn-success mt-3 mb-3">Add New Department</a>
 
-<a href="/Department/Add" class="btn btn-success mt-3 mb-3">New</a>
-<table class="table table-hover table-bordered">
-	<tr>
-		<th>Number</th>
-		<th>Name</th>
-		<th>Employees Count</th>
-	</tr>
-	@foreach (var item in Model)
-	{
-		<tr>
-			<td>@item.Id</td>
-			<td>@item.Name</td>
-			<td>@item.Students?.Count</td>
-		</tr>
-	}
-</table>
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Employees Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Students?.Count</td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                            @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a> *@
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
