@@ -16,5 +16,6 @@ namespace Day02.Repositories
         public IQueryable<Student> SearchByName(IQueryable<Student> query, string name);
         public IQueryable<Student> FilterDepartments(IQueryable<Student> query, int? deptId);
         public List<Student> Paginate(IQueryable<Student> query, int n);
+        StudentCourseResult GetStuCrs(int studentId, int courseId);
     }
 }

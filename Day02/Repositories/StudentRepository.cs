@@ -8,9 +8,9 @@ namespace Day02.Repositories
     public class StudentRepository : IStudentRepository
     {
         SchoolDbContext _context;
-        public StudentRepository()
+        public StudentRepository(SchoolDbContext context)
         {
-            _context = new SchoolDbContext();
+            _context = context;
         }
         public void Add(Student student)
         {
@@ -50,6 +50,13 @@ namespace Day02.Repositories
                            .AsNoTracking();
         }
 
+        public StudentCourseResult GetStuCrs(int studentId, int courseId)
+        {
+            return _context.StudentCourseResults
+                           .Include(SCR => SCR.Student)
+                           .Include(SCR => SCR.Course)
+                           .FirstOrDefault(SCR => SCR.StudentId == studentId && SCR.CourseId == courseId);
+        }
 
         public int GetCount(IQueryable<Student> query)
         {

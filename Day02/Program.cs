@@ -10,9 +10,13 @@ namespace Day02
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<SchoolDbContext>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
             builder.Services.AddDbContext<SchoolDbContext>();
 
             var app = builder.Build();

@@ -1,0 +1,30 @@
+﻿@model StudentCourseResult
+@{
+    ViewData["Title"] = "Course Grade";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Student Course Result:</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Student Name:</div>
+                <div class="col-md-9">@Model.Student.Name</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Course Name:</div>
+                <div class="col-md-9">@Model.Course.Name</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Grade:</div>
+                <div class="col-md-1 badge @ViewBag.GradeBadgeClass">@Model.Grade</div>
+            </div>
+            <hr />
+        </div>
+        <div class="card-footer">
+            <a asp-action="ShowDetails" asp-route-id="@Model.StudentId" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

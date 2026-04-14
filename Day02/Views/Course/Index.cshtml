@@ -1,6 +1,6 @@
-﻿@model List<Student>
+﻿@model List<Course>
 @{
-    ViewData["Title"] = "Students";
+    ViewData["Title"] = "Courses";
     var currentPage = (int)ViewData["CurrentPage"];
     var totalPages = (int)ViewData["TotalPages"];
     var searchTerm = ViewData["SearchTerm"];
@@ -8,13 +8,13 @@
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4">All Students</h2>
-    <a asp-action="Create" class="btn btn-success mb-3">Add New Student</a>
+    <h2 class="mb-4">All Courses</h2>
+    <a asp-action="Create" class="btn btn-success mb-3">Add New Course</a>
 
     <form asp-action="Index" method="get" class="row g-3 mb-4">
         <div class="col-auto">
             <input type="text" name="name" class="form-control"
-                   placeholder="Search names..." value="@ViewData["SearchTerm"]">
+                   placeholder="Search courses..." value="@searchTerm">
         </div>
 
         <div class="col-auto">
@@ -39,7 +39,8 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Age</th>
+                <th>Degree</th>
+                <th>Minimum Degree</th>
                 <th>Department</th>
                 <th>Actions</th>
             </tr>
@@ -50,13 +51,14 @@
                 <tr>
                     <td>@item.Id</td>
                     <td><strong>@item.Name</strong></td>
-                    <td>@item.Age</td>
+                    <td>@item.Degree</td>
+                    <td>@item.MinDegree</td>
                     <td><span>@(item.Department?.Name ?? "No Dept")</span></td>
                     <td>
                         <div class="btn-group">
                             <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                            @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a> *@
                         </div>
                     </td>
                 </tr>

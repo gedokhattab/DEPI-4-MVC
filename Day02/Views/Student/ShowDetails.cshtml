@@ -27,15 +27,17 @@
                     <thead>
                         <tr>
                             <th>Course</th>
-                            <th>Grade</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var res in Model.StuCrsRes)
                         {
                             <tr>
-                                <td>@res.Course.Name</td>
-                                <td><span class="badge badge-info text-dark">@res.Grade</span></td>
+                                <td>
+                                    <a asp-action="ShowStuCrs" asp-route-StudentId="@Model.Id" asp-route-CourseId="@res.CourseId">
+                                        @res.Course.Name
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>

@@ -10,11 +10,13 @@ namespace Day02.Controllers
     {
         IStudentRepository _studentRepository;
         IDepartmentRepository _departmentRepository;
+        ICourseRepository _courseRepository;
 
-        public StudentController(IStudentRepository studentRepository, IDepartmentRepository departmentRepository)
+        public StudentController(IStudentRepository studentRepository, IDepartmentRepository departmentRepository, ICourseRepository courseRepository)
         {
             _studentRepository = studentRepository;
             _departmentRepository = departmentRepository;
+            _courseRepository = courseRepository;
         }
 
         // GET: /Student
@@ -49,6 +51,15 @@ namespace Day02.Controllers
         {
             var Student = _studentRepository.GetById(id);
             return View("ShowDetails", Student);
+        }
+
+        // GET: /Student/ShowStuCrs?StudentId=1&CourseId=2
+        [HttpGet]
+        public IActionResult ShowStuCrs(int StudentId, int CourseId)
+        {
+            StudentCourseResult result = _studentRepository.GetStuCrs(StudentId, CourseId);
+            ViewBag.GradeBadgeClass = result.Grade >= result.Course.MinDegree ? "badge-success" : "badge-danger";
+            return View("ShowStuCrs", result);
         }
 
         // GET: /Student/Create

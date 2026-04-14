@@ -1,0 +1,81 @@
+﻿@model Course
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Course: @Model.Name</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Course ID:</div>
+                <div class="col-md-9">@Model.Id</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Degree:</div>
+                <div class="col-md-9">@Model.Degree</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Average Degree:</div>
+                <div class="col-md-9">@ViewBag.AvgDegree</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Department:</div>
+                <div class="col-md-9">@(Model.Department?.Name ?? "No Department Assigned")</div>
+            </div>
+
+            <hr />
+            <h4>Staff</h4>
+            @if (Model.Teachers.Any())
+            {
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Teacher</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var teacher in Model.Teachers)
+                        {
+                            <tr>
+                                <td>@teacher.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted italic">No teachers enrolled yet.</p>
+            }
+            <hr />
+            <h4>Academic Record</h4>
+            @if (Model.StuCrsRes.Any())
+            {
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var res in Model.StuCrsRes)
+                        {
+                            <tr>
+                                <td>@res.Student.Name</td>
+                                <td><span class="badge badge-info text-dark">@res.Grade</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted italic">No students enrolled yet.</p>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

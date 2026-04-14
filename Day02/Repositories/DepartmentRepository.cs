@@ -7,9 +7,9 @@ namespace Day02.Repositories
     public class DepartmentRepository : IDepartmentRepository
     {
         SchoolDbContext _context;
-        public DepartmentRepository()
+        public DepartmentRepository(SchoolDbContext context)
         {
-            _context = new SchoolDbContext();
+            _context = context;
         }
         public void Add(Department department)
         {

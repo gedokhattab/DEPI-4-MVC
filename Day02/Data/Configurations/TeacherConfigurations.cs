@@ -11,6 +11,7 @@ namespace Day02.Data.Configurations
             builder.HasOne(t => t.Course)
                    .WithMany(c => c.Teachers)
                    .HasForeignKey(t => t.CourseId)
+                   .IsRequired(false)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }
