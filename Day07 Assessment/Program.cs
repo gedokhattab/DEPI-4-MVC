@@ -1,0 +1,41 @@
+using Day07_Assessment.Data.Repositories_Implementations;
+using Day07_Assessment.Domain.Repository_Interfaces;
+using Day07_Assessment.Infrastructure.Data.DbContexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace Day07_Assessment
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<TaskDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
+            builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Task/Error");
+            }
+            app.UseStaticFiles();
+
+            //app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Task}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}

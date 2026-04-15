@@ -1,0 +1,31 @@
+﻿@model TaskItem
+@{
+    ViewData["Title"] = "New Task";
+}
+
+<h1>New Task</h1>
+
+<form method="post" asp-action="CreateTask">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group mt-2">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="DueTo" class="control-label"></label>
+        <input asp-for="DueTo" type="datetime-local" class="form-control"
+               value="@DateTime.Today.AddDays(7).ToString("yyyy-MM-ddT00:00")" />
+        <span asp-validation-for="DueTo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary mt-3 mb-3" />
+    </div>
+</form>
+
+<a asp-action="Index">Back to List</a>

@@ -66,17 +66,17 @@ namespace Day02.Repositories
         public IQueryable<Student> SearchByName(IQueryable<Student> query, string name)
         {
             if(!string.IsNullOrEmpty(name))
-                query = query.Where(s => s.Name.Contains(name));
+                return query = query.Where(s => s.Name.Contains(name));
             return query;
         }
 
         public IQueryable<Student> FilterDepartments(IQueryable<Student> query, int? deptId)
         {
             if (deptId.HasValue)
-                query = query.Where(s => s.DepartmentId == deptId.Value);
-
+                return query.Where(s => s.DepartmentId == deptId.Value);
             return query;
         }
+
         public List<Student> Paginate(IQueryable<Student> query, int n)
         {
             return query.Skip(n * 10)

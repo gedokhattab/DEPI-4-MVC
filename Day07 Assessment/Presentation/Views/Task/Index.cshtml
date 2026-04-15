@@ -1,0 +1,114 @@
+﻿@model List<TaskItem>
+
+@{
+    ViewData["Title"] = "Tasks";
+    var currentPage = (int)ViewData["CurrentPage"];
+    var totalPages = (int)ViewData["TotalPages"];
+    string searchTerm = ViewData["SearchTerm"] as string;
+    bool isCompleted = ViewData["IsCompleted"] as bool? ?? false;
+    int num = (currentPage * 10) + 1; 
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>All Tasks</h2>
+        <a asp-action="Create" class="btn btn-success">Add New Task</a>
+    </div>
+
+    <form asp-action="Index" method="get" class="row g-3 mb-4">
+        <div class="col-auto">
+            <input type="text" name="title" class="form-control"
+                   placeholder="Search tasks..." value="@searchTerm">
+        </div>
+
+        <div class="col-auto d-flex align-items-center">
+            <input type="checkbox" name="showCompleted" id="showCompleted" class="form-check-input me-2"
+                   value="true" @(isCompleted ? "checked" : "")>
+            <label class="form-check-label" for="showCompleted">Completed Only</label>
+        </div>
+    
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        
+            @if (!string.IsNullOrEmpty(searchTerm) || isCompleted)
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+            }
+        </div>
+    </form>
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">@num</td>
+                    <td><strong>@item.Title</strong></td>
+                    <td>
+                        @(item.DueTo?.ToString("f") ?? "N/A")
+                    </td>
+                    <td class="text-center">
+                        @if (item.IsCompleted)
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a asp-action="ShowDetails" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm mx-1">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                num++;
+            }
+        </tbody>
+    </table>
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @* Previous *@
+                <li class="page-item @(currentPage == 0 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-n="@(currentPage - 1)"
+                       asp-route-title="@searchTerm"
+                       asp-route-showCompleted="@isCompleted">&laquo;</a>
+                </li>
+
+                @for (int i = 0; i < totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-n="@i"
+                           asp-route-title="@searchTerm"
+                           asp-route-showCompleted="@isCompleted">@(i + 1)</a>
+                    </li>
+                }
+
+                @* Next *@
+                <li class="page-item @(currentPage >= totalPages - 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-n="@(currentPage + 1)"
+                       asp-route-title="@searchTerm"
+                       asp-route-showCompleted="@isCompleted">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

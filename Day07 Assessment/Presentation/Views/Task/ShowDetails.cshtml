@@ -1,0 +1,43 @@
+﻿@model TaskItem
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Task Details: @Model.Title</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Task ID:</div>
+                <div class="col-md-9">@Model.Id</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Created:</div>
+                <div class="col-md-9">
+                    <span>
+                        @Model.CreatedAt.ToString("f")
+                    </span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Due Date:</div>
+                <div class="col-md-9">
+                    <span>
+                        @Model.DueTo?.ToString("f")
+                    </span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Completed:</div>
+                <div class="col-md-9">@(Model.IsCompleted? "Yes": "No")</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3 font-weight-bold">Task Description:</div>
+                <div class="col-md-9">@Model.Description</div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
