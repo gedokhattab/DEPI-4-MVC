@@ -1,7 +1,7 @@
 ﻿using Day07_Assessment.Domain.Models;
 using Day07_Assessment.Domain.Repository_Interfaces;
+using Day07_Assessment.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace Day07_Assessment.Presentation.Controllers
@@ -33,6 +33,7 @@ namespace Day07_Assessment.Presentation.Controllers
             ViewData["SearchTerm"] = title;
             var query = _taskRepository.SearchByName(title);
             query = _taskRepository.FilterCompleted(query, showCompleted);
+            query = _taskRepository.SortByDueTo(query);
 
             int totalCount = query.Count();
             int totalPages = (int)Math.Ceiling(totalCount / 10.0);

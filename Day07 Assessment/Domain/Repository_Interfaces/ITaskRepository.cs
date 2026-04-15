@@ -13,5 +13,6 @@ namespace Day07_Assessment.Domain.Repository_Interfaces
         IQueryable<TaskItem> SearchByName(string title);
         IQueryable<TaskItem> FilterCompleted(IQueryable<TaskItem> query, bool isCompleted);
         List<TaskItem> Paginate(IQueryable<TaskItem> query, int n);
+        IQueryable<TaskItem> SortByDueTo(IQueryable<TaskItem> query);
     }
 }

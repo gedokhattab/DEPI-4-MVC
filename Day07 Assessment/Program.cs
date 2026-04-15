@@ -1,6 +1,7 @@
 using Day07_Assessment.Data.Repositories_Implementations;
 using Day07_Assessment.Domain.Repository_Interfaces;
 using Day07_Assessment.Infrastructure.Data.DbContexts;
+using Day07_Assessment.Presentation.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Day07_Assessment
@@ -12,7 +13,12 @@ namespace Day07_Assessment
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                            .AddRazorOptions(options =>
+                            {
+                                options.ViewLocationFormats.Add("/Presentation/Views/{1}/{0}.cshtml");
+                                options.ViewLocationFormats.Add("/Presentation/Views/Shared/{0}.cshtml");
+                            });
             builder.Services.AddDbContext<TaskDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );

@@ -33,7 +33,7 @@ namespace Day07_Assessment.Data.Repositories_Implementations
 
         public List<TaskItem> GetAll()
         {
-            return _context.Tasks.ToList();
+            return _context.Tasks.OrderByDescending(t => t.DueTo).ToList();
         }
         public TaskItem GetById(int id)
         {
@@ -46,6 +46,11 @@ namespace Day07_Assessment.Data.Repositories_Implementations
             if (!string.IsNullOrEmpty(title))
                 return _context.Tasks.Where(t => t.Title.Contains(title));
             return _context.Tasks;
+        }
+
+        public IQueryable<TaskItem> SortByDueTo(IQueryable<TaskItem> query)
+        {
+            return query.OrderBy(t => t.DueTo);
         }
 
         public IQueryable<TaskItem> FilterCompleted(IQueryable<TaskItem> query, bool isCompleted)
