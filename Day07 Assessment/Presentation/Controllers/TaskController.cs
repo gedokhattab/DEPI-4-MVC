@@ -1,4 +1,4 @@
-﻿using Day07_Assessment.Domain.Models;
+using Day07_Assessment.Domain.Models;
 using Day07_Assessment.Domain.Repository_Interfaces;
 using Day07_Assessment.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -28,12 +28,12 @@ namespace Day07_Assessment.Presentation.Controllers
 
         // GET: /Task
         [HttpGet]
-        public IActionResult Index(string title = "", int n = 0, bool showCompleted = false)
+        public IActionResult Index(string title = "", int n = 0, bool showCompleted = false, string sortBy = "DueTo", bool isDescending = false)
         {
             ViewData["SearchTerm"] = title;
             var query = _taskRepository.SearchByName(title);
             query = _taskRepository.FilterCompleted(query, showCompleted);
-            query = _taskRepository.SortByDueTo(query);
+            query = _taskRepository.SortTasks(query, sortBy, isDescending);
 
             int totalCount = query.Count();
             int totalPages = (int)Math.Ceiling(totalCount / 10.0);
@@ -46,6 +46,8 @@ namespace Day07_Assessment.Presentation.Controllers
             ViewData["TotalPages"] = totalPages;
             ViewData["CurrentPage"] = n;
             ViewData["IsCompleted"] = showCompleted;
+            ViewData["SortBy"] = sortBy;
+            ViewData["IsDescending"] = isDescending;
 
             return View(tasks);
         }

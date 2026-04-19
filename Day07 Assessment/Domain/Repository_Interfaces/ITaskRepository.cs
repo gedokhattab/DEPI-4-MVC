@@ -1,4 +1,4 @@
-﻿using Day07_Assessment.Domain.Models;
+using Day07_Assessment.Domain.Models;
 
 namespace Day07_Assessment.Domain.Repository_Interfaces
 {
@@ -13,6 +13,6 @@ namespace Day07_Assessment.Domain.Repository_Interfaces
         IQueryable<TaskItem> SearchByName(string title);
         IQueryable<TaskItem> FilterCompleted(IQueryable<TaskItem> query, bool isCompleted);
         List<TaskItem> Paginate(IQueryable<TaskItem> query, int n);
-        IQueryable<TaskItem> SortByDueTo(IQueryable<TaskItem> query);
+        IQueryable<TaskItem> SortTasks(IQueryable<TaskItem> query, string sortBy, bool isDescending);
     }
 }

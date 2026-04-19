@@ -1,8 +1,8 @@
-﻿using Day07_Assessment.Domain.Models;
+using Day07_Assessment.Domain.Models;
 using Day07_Assessment.Domain.Repository_Interfaces;
 using Day07_Assessment.Infrastructure.Data.DbContexts;
 
-namespace Day07_Assessment.Data.Repositories_Implementations
+namespace Day07_Assessment.Infrastructure.Repositories_Implementations
 {
     public class TaskRepository : ITaskRepository
     {
@@ -48,9 +48,15 @@ namespace Day07_Assessment.Data.Repositories_Implementations
             return _context.Tasks;
         }
 
-        public IQueryable<TaskItem> SortByDueTo(IQueryable<TaskItem> query)
+        public IQueryable<TaskItem> SortTasks(IQueryable<TaskItem> query, string sortBy, bool isDescending)
         {
-            return query.OrderBy(t => t.DueTo);
+            query = sortBy switch
+            {
+                "Title" => isDescending ? query.OrderByDescending(t => t.Title) : query.OrderBy(t => t.Title),
+                "Completed" => isDescending ? query.OrderByDescending(t => t.IsCompleted) : query.OrderBy(t => t.IsCompleted),
+                _ => isDescending ? query.OrderByDescending(t => t.DueTo) : query.OrderBy(t => t.DueTo), // Default is DueTo
+            };
+            return query;
         }
 
         public IQueryable<TaskItem> FilterCompleted(IQueryable<TaskItem> query, bool isCompleted)

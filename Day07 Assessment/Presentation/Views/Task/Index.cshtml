@@ -1,4 +1,4 @@
-﻿@model List<TaskItem>
+@model List<TaskItem>
 
 @{
     ViewData["Title"] = "Tasks";
@@ -6,6 +6,8 @@
     var totalPages = (int)ViewData["TotalPages"];
     string searchTerm = ViewData["SearchTerm"] as string;
     bool isCompleted = ViewData["IsCompleted"] as bool? ?? false;
+    string sortBy = ViewData["SortBy"] as string ?? "DueTo";
+    bool isDescending = ViewData["IsDescending"] as bool? ?? false;
     int num = (currentPage * 10) + 1; 
 }
 
@@ -16,6 +18,8 @@
     </div>
 
     <form asp-action="Index" method="get" class="row g-3 mb-4">
+        <input type="hidden" name="sortBy" value="@sortBy" />
+        <input type="hidden" name="isDescending" value="@isDescending.ToString()" />
         <div class="col-auto">
             <input type="text" name="title" class="form-control"
                    placeholder="Search tasks..." value="@searchTerm">
@@ -41,9 +45,30 @@
         <thead class="table-dark text-center">
             <tr>
                 <th>#</th>
-                <th>Title</th>
-                <th>Due Date</th>
-                <th>Status</th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-title="@searchTerm" 
+                       asp-route-showCompleted="@isCompleted" 
+                       asp-route-sortBy="Title" 
+                       asp-route-isDescending="@(sortBy == "Title" ? !isDescending : false)"
+                       class="text-white text-decoration-none">Title</a>
+                </th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-title="@searchTerm" 
+                       asp-route-showCompleted="@isCompleted" 
+                       asp-route-sortBy="DueTo" 
+                       asp-route-isDescending="@(sortBy == "DueTo" ? !isDescending : false)"
+                       class="text-white text-decoration-none">Due Date</a>
+                </th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-title="@searchTerm" 
+                       asp-route-showCompleted="@isCompleted" 
+                       asp-route-sortBy="Completed" 
+                       asp-route-isDescending="@(sortBy == "Completed" ? !isDescending : false)"
+                       class="text-white text-decoration-none">Status</a>
+                </th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -88,7 +113,9 @@
                     <a class="page-link" asp-action="Index"
                        asp-route-n="@(currentPage - 1)"
                        asp-route-title="@searchTerm"
-                       asp-route-showCompleted="@isCompleted">&laquo;</a>
+                       asp-route-showCompleted="@isCompleted"
+                       asp-route-sortBy="@sortBy"
+                       asp-route-isDescending="@isDescending">&laquo;</a>
                 </li>
 
                 @for (int i = 0; i < totalPages; i++)
@@ -97,7 +124,9 @@
                         <a class="page-link" asp-action="Index"
                            asp-route-n="@i"
                            asp-route-title="@searchTerm"
-                           asp-route-showCompleted="@isCompleted">@(i + 1)</a>
+                           asp-route-showCompleted="@isCompleted"
+                           asp-route-sortBy="@sortBy"
+                           asp-route-isDescending="@isDescending">@(i + 1)</a>
                     </li>
                 }
 
@@ -106,7 +135,9 @@
                     <a class="page-link" asp-action="Index"
                        asp-route-n="@(currentPage + 1)"
                        asp-route-title="@searchTerm"
-                       asp-route-showCompleted="@isCompleted">&raquo;</a>
+                       asp-route-showCompleted="@isCompleted"
+                       asp-route-sortBy="@sortBy"
+                       asp-route-isDescending="@isDescending">&raquo;</a>
                 </li>
             </ul>
         </nav>
