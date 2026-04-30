@@ -1,5 +1,7 @@
 using Day02.Data.Contexts;
 using Day02.Repositories;
+using Day02.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Day02
 {
@@ -12,12 +14,11 @@ namespace Day02
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<SchoolDbContext>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
-            builder.Services.AddDbContext<SchoolDbContext>();
+            builder.Services.AddDbContext<SchoolDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

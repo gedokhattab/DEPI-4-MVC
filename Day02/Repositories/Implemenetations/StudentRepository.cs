@@ -1,5 +1,6 @@
 ﻿using Day02.Data.Contexts;
 using Day02.Models;
+using Day02.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 

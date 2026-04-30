@@ -1,7 +1,7 @@
 ﻿using Day02.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Day02.Repositories
+namespace Day02.Repositories.Interfaces
 {
     public interface IStudentRepository
     {

@@ -1,5 +1,5 @@
 ﻿using Day02.Models;
-using Day02.Repositories;
+using Day02.Repositories.Interfaces;
 using Day02.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

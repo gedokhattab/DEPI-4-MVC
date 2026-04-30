@@ -1,6 +1,6 @@
 ﻿using Day02.Models;
 
-namespace Day02.Repositories
+namespace Day02.Repositories.Interfaces
 {
     public interface IDepartmentRepository
     {
